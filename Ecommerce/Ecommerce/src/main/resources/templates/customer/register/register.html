@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Responsive Registration Form | CodingLab </title>
+  <link rel="stylesheet" th:href="@{customer/register/style.css}">
+</head>
+<body>
+<div class="container">
+  <!-- Title section -->
+  <div class="title">Registration</div>
+
+  <div class="content">
+    <!-- Registration form -->
+    <form th:action="@{/register}" method="post" th:object="${customer}">
+      <div class="user-details">
+        <!-- Input for Full Name -->
+        <div class="input-box">
+          <span class="details">Full Name</span>
+          <input type="text" placeholder="Enter your name" th:field="*{name}" required>
+        </div>
+        <!-- Input for Email -->
+        <div class="input-box">
+          <span class="details">Email</span>
+          <input type="text" placeholder="Enter your email" th:field="*{email}" required>
+        </div>
+        <!-- Input for Address -->
+        <div class="input-box">
+          <span class="details">Address</span>
+          <input type="text" placeholder="Enter your address" th:field="*{address}" required>
+        </div>
+        <!-- Input for Phone Number -->
+        <div class="input-box">
+          <span class="details">Phone Number</span>
+          <input type="text" placeholder="Enter your number" th:field="*{phoneNumber}" required>
+        </div>
+        <!-- Input for Password -->
+        <div class="input-box">
+          <span class="details">Password</span>
+          <input type="password" placeholder="Enter your password" th:field="*{password}" required>
+        </div>
+      </div>
+      <!-- Hiển thị thông báo lỗi nếu có -->
+      <div th:if="${error}" style="color: red; margin-top: 10px;">
+        <p th:text="${error}"></p>
+      </div>
+      <!-- Hiển thị thông báo thành công -->
+      <div th:if="${message}" style="color: green; margin-top: 10px;">
+        <p th:text="${message}"></p>
+      </div>
+      <!-- Submit button -->
+      <div class="button">
+        <input type="submit" value="Register">
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

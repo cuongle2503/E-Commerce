@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="customer/home/fragmentsIndex/head :: head"></head>
+	<body>
+		<!-- HEADER -->
+		<header th:replace="customer/home/fragmentsIndex/header :: header"></header>
+
+		<!-- NAVIGATION -->
+		<nav th:replace="customer/home/fragmentsIndex/navigation :: navigation"></nav>
+
+		<!-- SECTION 01-->
+		<div th:replace="customer/home/fragmentsIndex/section01 :: section01"></div>
+
+		<!-- SECTION 02-->
+		<div th:replace="customer/home/fragmentsIndex/section02 :: section02"></div>
+
+		<!-- SECTION 03-->
+		<div th:replace="customer/home/fragmentsIndex/section03 :: section03"></div>
+
+		<!-- SECTION 04-->
+		<div th:replace="customer/home/fragmentsIndex/section04 :: section04"></div>
+
+		<!-- SECTION 05-->
+		<div th:replace="customer/home/fragmentsIndex/section05 :: section05"></div>
+
+		<!-- NEWSLETTER-->
+		<div th:replace="customer/home/fragmentsIndex/newsletter :: newsletter"></div>
+
+		<!-- FOOTER -->
+		<footer th:replace="customer/home/fragmentsIndex/footer :: footer"></footer>
+
+		<!-- jQuery Plugins -->
+		<script th:src="@{/customer/home/js/jquery.min.js}"></script>
+		<script th:src="@{/customer/home/js/bootstrap.min.js}"></script>
+		<script th:src="@{/customer/home/js/slick.min.js}"></script>
+		<script th:src="@{/customer/home/js/nouislider.min.js}"></script>
+		<script th:src="@{/customer/home/js/jquery.zoom.min.js}"></script>
+		<script th:src="@{/customer/home/js/main.js}"></script>
+	</body>
+</html>

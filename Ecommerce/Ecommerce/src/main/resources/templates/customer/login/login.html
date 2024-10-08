@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Responsive Login Form</title>
+    <link rel="stylesheet" th:href="@{customer/register/style.css}">
+</head>
+<body>
+<div class="container">
+    <!-- Title section -->
+    <div class="title">LOGIN</div>
+    <div class="content">
+        <!-- Registration form -->
+        <form th:action="@{/login}" method="post" th:object="${customer}">
+            <div class="user-details">
+                <!-- Input for Email -->
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input type="text" placeholder="Enter your email" th:field="*{email}" required>
+                </div>
+                <!-- Input for Pass -->
+                <div class="input-box">
+                    <span class="details">Password</span>
+                    <input type="password" placeholder="Enter your password" th:field="*{password}" required>
+                </div>
+            </div>
+            <!-- Hiển thị thông báo lỗi nếu có -->
+            <div th:if="${error}" style="color: red;">
+                <p th:text="${error}"></p>
+            </div>
+            <!-- Submit button -->
+            <div class="button">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
