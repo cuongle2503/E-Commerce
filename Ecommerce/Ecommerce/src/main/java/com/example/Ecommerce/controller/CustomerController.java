@@ -45,7 +45,7 @@ public class CustomerController {
                                   RedirectAttributes redirectAttributes){
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error",
-                    "Validation failed: " + result.getAllErrors().get(0).getDefaultMessage());
+                    result.getAllErrors().get(0).getDefaultMessage());
             return "redirect:/register";
         }
         try {
@@ -74,7 +74,7 @@ public class CustomerController {
                                RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error",
-                    "Validation failed: " + result.getAllErrors().get(0).getDefaultMessage());
+                    result.getAllErrors().get(0).getDefaultMessage());
             return "redirect:/login";
         }
         try {
@@ -85,7 +85,6 @@ public class CustomerController {
         }
         return "redirect:/homepage";
     }
-
 //    --------------------------------------------------
 
 }

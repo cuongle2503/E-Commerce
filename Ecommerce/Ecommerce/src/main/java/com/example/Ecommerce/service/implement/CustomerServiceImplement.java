@@ -4,6 +4,8 @@ package com.example.Ecommerce.service.implement;
 import com.example.Ecommerce.dto.request.CustomerRequest;
 import com.example.Ecommerce.dto.response.CustomerResponse;
 import com.example.Ecommerce.entity.Customer;
+import com.example.Ecommerce.exception.AppException;
+import com.example.Ecommerce.exception.ErrorCode;
 import com.example.Ecommerce.mapper.CustomerMapper;
 import com.example.Ecommerce.repository.CustomerRepository;
 import com.example.Ecommerce.service.CustomerService;
@@ -22,7 +24,7 @@ public class CustomerServiceImplement implements CustomerService {
     @Override
     public CustomerResponse createAccount(CustomerRequest request) {
         if(customerRespository.existsByEmail(request.getEmail())){
-            throw new RuntimeException("You email have exist please register other email.");
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
         Customer customer = customerMapper.toCustomer(request);
         return customerMapper.toCustomerResponse(customerRespository.save(customer));
@@ -31,11 +33,11 @@ public class CustomerServiceImplement implements CustomerService {
     @Override
     public Boolean signIn(String email, String password) {
         if(!customerRespository.existsByEmail(email)){
-            throw new RuntimeException("You email not exist please login other email.");
+            throw new AppException(ErrorCode.EMAIL_NOT_EXISTED);
         }
         Customer customer = customerRespository.findByEmail(email);
         if (!customer.getPassword().equals(password)) {
-            throw new RuntimeException("Incorrect password. Please try again.");
+            throw new AppException(ErrorCode.PASSWORD_INCORRECT);
         }
         return true;
     }
