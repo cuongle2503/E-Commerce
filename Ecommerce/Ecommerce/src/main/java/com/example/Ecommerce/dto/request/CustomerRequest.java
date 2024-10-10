@@ -16,7 +16,7 @@ public class CustomerRequest {
     String email;
     String phoneNumber;
     String address;
-    @Size(min = 10, message = "Password must be at least 8 characters.")
+    @Size(min = 10, message = "Password must be at least 10 characters.")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$", message = "Password must contain at least one letter and one number.")
     String password;
 }

@@ -23,16 +23,16 @@ public class CustomerController {
     @Autowired
     ProductService productService;
 
-//    -----------------HOME-----------------------------
+    //    -----------------HOME-----------------------------
     @GetMapping("/homepage")
     public String showHomePage(Model model) {
         List<ProductResponse> products = productService.getProducts();
         model.addAttribute("products", products);
         return "customer/home/index";
     }
-//    --------------------------------------------------
+    //    --------------------------------------------------
 
-//    -----------------REGISTRATION---------------------
+    //    -----------------REGISTRATION---------------------
     @GetMapping("/register")
     public String signUpPage(Model model){
         model.addAttribute("customer", new CustomerRequest());
@@ -58,9 +58,9 @@ public class CustomerController {
             return "redirect:/register";
         }
     }
-//    --------------------------------------------------
+    //    --------------------------------------------------
 
-//    -----------------LOGIN----------------------------
+    //    -----------------LOGIN----------------------------
     @GetMapping("/login")
     public String signInPage(Model model, @ModelAttribute("message") String message){
         model.addAttribute("customer", new CustomerRequest());
@@ -78,13 +78,13 @@ public class CustomerController {
             return "redirect:/login";
         }
         try {
-            customerService.signIn(request.getEmail(),request.getPassword());
-        }catch (RuntimeException e){
+            String token = customerService.signIn(request.getEmail(), request.getPassword());
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/login";
         }
         return "redirect:/homepage";
     }
-//    --------------------------------------------------
+    //    --------------------------------------------------
 
 }

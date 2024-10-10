@@ -8,5 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CustomerService {
     CustomerResponse createAccount(CustomerRequest request);
-    Boolean signIn(String email, String password);
+    String signIn(String email, String password);
+    String generateToken(String email);
 }
