@@ -1,6 +1,5 @@
 package com.example.Ecommerce.service.implement;
 
-
 import com.example.Ecommerce.dto.request.CustomerRequest;
 import com.example.Ecommerce.dto.response.CustomerResponse;
 import com.example.Ecommerce.entity.Customer;
@@ -11,6 +10,8 @@ import com.example.Ecommerce.repository.CustomerRepository;
 import com.example.Ecommerce.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +28,10 @@ public class CustomerServiceImplement implements CustomerService {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
         Customer customer = customerMapper.toCustomer(request);
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        customer.setPassword(passwordEncoder.encode(request.getPassword()));
+
         return customerMapper.toCustomerResponse(customerRespository.save(customer));
     }
 
@@ -35,10 +40,15 @@ public class CustomerServiceImplement implements CustomerService {
         if(!customerRespository.existsByEmail(email)){
             throw new AppException(ErrorCode.EMAIL_NOT_EXISTED);
         }
+
         Customer customer = customerRespository.findByEmail(email);
-        if (!customer.getPassword().equals(password)) {
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
+        if (!passwordEncoder.matches(password, customer.getPassword())) {
             throw new AppException(ErrorCode.PASSWORD_INCORRECT);
         }
+
         return true;
     }
 
