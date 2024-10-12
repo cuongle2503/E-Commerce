@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class PostmanCustomerController {
     @Autowired
     CustomerService customerService;
-    @Autowired
-    ProductService productService;
 
     //    -----------------REGISTRATION---------------------
     @PostMapping("/register")

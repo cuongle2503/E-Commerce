@@ -10,4 +10,6 @@ public interface ProductService {
     ProductResponse addProduct(ProductRequest productRequest);
     List<ProductResponse> getProducts();
     List<ProductResponse> getProductsByCategory(String category);
+    List<ProductResponse> getProductsByBrand(String category);
+    List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax);
 }

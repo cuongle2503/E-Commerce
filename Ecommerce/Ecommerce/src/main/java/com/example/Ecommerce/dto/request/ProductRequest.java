@@ -1,8 +1,5 @@
 package com.example.Ecommerce.dto.request;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,4 +14,6 @@ public class ProductRequest {
     Double price;
     String category;
     String detail;
+    String images;
+    String brand;
 }

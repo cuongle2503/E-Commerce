@@ -22,4 +22,6 @@ public class Product {
     Double price;
     String category;
     String detail;
+    String images;
+    String brand;
 }

@@ -36,4 +36,16 @@ public class ProductServiceImplement implements ProductService {
         List<Product> products = productRepository.findByCategory(category);
         return products.stream().map(productMapper::toProductResponse).toList();
     }
+
+    @Override
+    public List<ProductResponse> getProductsByBrand(String brand) {
+        List<Product> products = productRepository.findByBrand(brand);
+        return products.stream().map(productMapper::toProductResponse).toList();
+    }
+
+    @Override
+    public List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax) {
+        List<Product> products = productRepository.findByPriceBetween(priceMin, priceMax);
+        return products.stream().map(productMapper::toProductResponse).toList();
+    }
 }
