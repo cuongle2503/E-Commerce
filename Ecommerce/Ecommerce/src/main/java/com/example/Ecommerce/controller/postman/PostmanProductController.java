@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -53,5 +52,24 @@ public class PostmanProductController {
         return productResponseList;
     }
 
+    @GetMapping("/sortProductByPriceAsc")
+    public List<ProductResponse> findByOrderByPriceAsc(){
+        List<ProductResponse> productResponseList;
+        productResponseList = productService.findByOrderByPriceAsc();
+        return productResponseList;
+    }
 
+    @GetMapping("/sortProductByPriceDesc")
+    public List<ProductResponse> findByOrderByPriceDesc(){
+        List<ProductResponse> productResponseList;
+        productResponseList = productService.findByOrderByPriceDesc();
+        return productResponseList;
+    }
+
+    @GetMapping("/searchProductsByName/{name}")
+    public List<ProductResponse> searchProductsByName(@PathVariable("name") String name){
+        List<ProductResponse> productResponseList;
+        productResponseList = productService.searchProductsByName(name);
+        return productResponseList;
+    }
 }

@@ -12,4 +12,7 @@ public interface ProductService {
     List<ProductResponse> getProductsByCategory(String category);
     List<ProductResponse> getProductsByBrand(String category);
     List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax);
+    List<ProductResponse> findByOrderByPriceAsc();
+    List<ProductResponse> findByOrderByPriceDesc();
+    List<ProductResponse> searchProductsByName(String name);
 }

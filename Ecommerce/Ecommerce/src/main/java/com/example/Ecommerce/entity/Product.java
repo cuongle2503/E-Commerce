@@ -1,9 +1,6 @@
 package com.example.Ecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,6 +18,8 @@ public class Product {
     String name;
     Double price;
     String category;
+    @Lob
+    @Column(length = 100000000)
     String detail;
     String images;
     String brand;
