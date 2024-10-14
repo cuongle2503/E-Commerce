@@ -9,11 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRequest {
+public class BrandRequest {
     String name;
-    Double price;
-    String categoryId;;
     String detail;
-    String images;
-    String brandId;
 }

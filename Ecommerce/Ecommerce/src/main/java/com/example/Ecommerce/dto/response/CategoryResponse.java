@@ -1,8 +1,10 @@
 package com.example.Ecommerce.dto.response;
 
-import com.example.Ecommerce.entity.Category;
+import com.example.Ecommerce.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,12 +12,8 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class CategoryResponse {
     String id;
     String name;
-    Double price;
-    CategoryResponse category;
     String detail;
-    String images;
-    BrandResponse brand;
 }

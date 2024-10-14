@@ -1,5 +1,6 @@
 package com.example.Ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -17,10 +18,19 @@ public class Product {
     String id;
     String name;
     Double price;
-    String category;
+
     @Lob
     @Column(length = 100000000)
     String detail;
+
     String images;
-    String brand;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id", nullable = false)
+    Brand brand;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
+    Category category;
 }
