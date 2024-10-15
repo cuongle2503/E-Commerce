@@ -9,10 +9,12 @@ import java.util.List;
 public interface ProductService {
     ProductResponse addProduct(ProductRequest productRequest);
     List<ProductResponse> getProducts();
-    List<ProductResponse> getProductsByCategory(String category);
-    List<ProductResponse> getProductsByBrand(String category);
     List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax);
     List<ProductResponse> findByOrderByPriceAsc();
     List<ProductResponse> findByOrderByPriceDesc();
     List<ProductResponse> searchProductsByName(String name);
+    List<ProductResponse> filterProducts(Double minPrice,
+                                         Double maxPrice,
+                                         List<String> brandNames,
+                                         List<String> categoryNames);
 }

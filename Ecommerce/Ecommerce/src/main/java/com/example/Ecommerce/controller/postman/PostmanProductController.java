@@ -31,20 +31,6 @@ public class PostmanProductController {
         return productResponseList;
     }
 
-    @GetMapping("/getProductsByCategory/{category}")
-    public List<ProductResponse> getProductsByCategory(@PathVariable("category") String category) {
-        List<ProductResponse> productResponseList;
-        productResponseList = productService.getProductsByCategory(category);
-        return productResponseList;
-    }
-
-    @GetMapping("/getProductsByBrand/{brand}")
-    public List<ProductResponse> getProductsByBrand(@PathVariable("brand") String brand) {
-        List<ProductResponse> productResponseList;
-        productResponseList = productService.getProductsByBrand(brand);
-        return productResponseList;
-    }
-
     @GetMapping("/getProductsByPriceRange/{priceMin}/{priceMax}")
     public List<ProductResponse> findByPriceBetween(@PathVariable("priceMin") Double priceMin, @PathVariable("priceMax") Double priceMax) {
         List<ProductResponse> productResponseList;
@@ -71,5 +57,22 @@ public class PostmanProductController {
         List<ProductResponse> productResponseList;
         productResponseList = productService.searchProductsByName(name);
         return productResponseList;
+    }
+
+    @GetMapping("/filterProduct/{priceMin}/{priceMax}/{brands}/{categories}")
+    public List<ProductResponse> filterProducts(@PathVariable("priceMin") Double priceMin,
+                                                @PathVariable("priceMax") Double priceMax,
+                                                @PathVariable("brands") List<String> brands,
+                                                @PathVariable("categories") List<String> categories) {
+        // Kiểm tra nếu danh sách là "null"
+        if (brands != null && brands.contains("null")) {
+            brands = null;
+        }
+        if (categories != null && categories.contains("null")) {
+            categories = null;
+        }
+
+        List<ProductResponse> filteredProducts = productService.filterProducts(priceMin, priceMax, brands, categories);
+        return filteredProducts;
     }
 }

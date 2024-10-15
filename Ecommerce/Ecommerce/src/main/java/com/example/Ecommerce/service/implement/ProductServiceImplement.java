@@ -2,10 +2,8 @@ package com.example.Ecommerce.service.implement;
 
 import com.example.Ecommerce.dto.request.ProductRequest;
 import com.example.Ecommerce.dto.response.ProductResponse;
-import com.example.Ecommerce.entity.Category;
 import com.example.Ecommerce.entity.Product;
 import com.example.Ecommerce.mapper.ProductMapper;
-import com.example.Ecommerce.repository.CategoryRepository;
 import com.example.Ecommerce.repository.ProductRepository;
 import com.example.Ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +33,6 @@ public class ProductServiceImplement implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getProductsByCategory(String category) {
-        List<Product> products = productRepository.findByCategory_Name(category);
-        return products.stream().map(productMapper::toProductResponse).toList();
-    }
-
-    @Override
-    public List<ProductResponse> getProductsByBrand(String brand) {
-        List<Product> products = productRepository.findByBrand_Name(brand);
-        return products.stream().map(productMapper::toProductResponse).toList();
-    }
-
-    @Override
     public List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax) {
         List<Product> products = productRepository.findByPriceBetween(priceMin, priceMax);
         return products.stream().map(productMapper::toProductResponse).toList();
@@ -67,6 +53,35 @@ public class ProductServiceImplement implements ProductService {
     @Override
     public List<ProductResponse> searchProductsByName(String name) {
         List<Product> products = productRepository.findByNameContainingIgnoreCase(name);
+        return products.stream().map(productMapper::toProductResponse).toList();
+    }
+
+    @Override
+    public List<ProductResponse> filterProducts(Double minPrice,
+                                                Double maxPrice,
+                                                List<String> brandNames,
+                                                List<String> categoryNames) {
+        List<Product> products;
+        // Lọc theo các tiêu chí khác nhau
+        if (minPrice != null && maxPrice != null) {
+            if (brandNames != null && !brandNames.isEmpty() && categoryNames != null && !categoryNames.isEmpty()) {
+                products = productRepository.findByPriceBetweenAndBrand_NameInAndCategory_NameIn(minPrice, maxPrice, brandNames, categoryNames);
+            } else if (brandNames != null && !brandNames.isEmpty()) {
+                products = productRepository.findByPriceBetweenAndBrand_NameIn(minPrice, maxPrice, brandNames);
+            } else if (categoryNames != null && !categoryNames.isEmpty()) {
+                products = productRepository.findByPriceBetweenAndCategory_NameIn(minPrice, maxPrice, categoryNames);
+            } else {
+                products = productRepository.findByPriceBetween(minPrice, maxPrice);
+            }
+        } else if (brandNames != null && !brandNames.isEmpty() && categoryNames != null && !categoryNames.isEmpty()) {
+            products = productRepository.findByBrand_NameInAndCategory_NameIn(brandNames, categoryNames);
+        } else {
+            products = productRepository.findAll();
+        }
+        System.out.println("Min Price: " + minPrice);
+        System.out.println("Max Price: " + maxPrice);
+        System.out.println("Brand Names: " + brandNames);
+        System.out.println("Category Names: " + categoryNames);
         return products.stream().map(productMapper::toProductResponse).toList();
     }
 
