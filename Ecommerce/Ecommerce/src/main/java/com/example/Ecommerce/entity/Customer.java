@@ -1,11 +1,10 @@
 package com.example.Ecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -23,4 +22,10 @@ public class Customer {
     String phoneNumber;
     String address;
     String password;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    List<Order> orders;
+
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
+    Cart cart;
 }

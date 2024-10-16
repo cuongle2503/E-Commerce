@@ -62,7 +62,6 @@ public class ProductServiceImplement implements ProductService {
                                                 List<String> brandNames,
                                                 List<String> categoryNames) {
         List<Product> products;
-        // Lọc theo các tiêu chí khác nhau
         if (minPrice != null && maxPrice != null) {
             if (brandNames != null && !brandNames.isEmpty() && categoryNames != null && !categoryNames.isEmpty()) {
                 products = productRepository.findByPriceBetweenAndBrand_NameInAndCategory_NameIn(minPrice, maxPrice, brandNames, categoryNames);

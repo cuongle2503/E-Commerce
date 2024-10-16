@@ -64,7 +64,6 @@ public class PostmanProductController {
                                                 @PathVariable("priceMax") Double priceMax,
                                                 @PathVariable("brands") List<String> brands,
                                                 @PathVariable("categories") List<String> categories) {
-        // Kiểm tra nếu danh sách là "null"
         if (brands != null && brands.contains("null")) {
             brands = null;
         }

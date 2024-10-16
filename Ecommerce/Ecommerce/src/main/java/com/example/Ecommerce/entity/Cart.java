@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,27 +13,21 @@ import java.util.List;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "orders")
-public class Order {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    Date orderDate;
-    String shippingAddress;
-    String oderStatus;
-    String oderMail;
-    Double totalAmount;
+    Integer quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false)
     Customer customer;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "order_product",
-            joinColumns = @JoinColumn(name = "order_id"),
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     List<Product> products;
-
 }

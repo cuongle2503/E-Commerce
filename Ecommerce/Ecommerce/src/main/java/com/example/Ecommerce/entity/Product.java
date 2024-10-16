@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor()
@@ -33,4 +35,10 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
     Category category;
+
+    @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
+    List<Order> orders;
+
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    List<Cart> carts;
 }

@@ -1,4 +1,4 @@
-<div class="section" th:fragment="section06">
+<div class="section" th:fragment="section07">
     <!-- container -->
     <div class="container">
         <!-- row -->
@@ -82,7 +82,7 @@
                 <!-- store products -->
                 <div class="row">
                     <!-- product -->
-                    <div class="col-md-4 col-xs-6"  th:each="product : ${products}">
+                    <div class="col-md-4 col-xs-6"  th:each="product : ${productsFilter}">
                         <div class="product" >
                             <div class="product-img">
                                 <img  th:src="@{${product.images}}" alt="">
