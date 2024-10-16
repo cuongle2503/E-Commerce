@@ -1,5 +1,6 @@
 package com.example.Ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,5 +23,6 @@ public class Brand {
     String detail;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER)
+    @JsonIgnore
     List<Product> products;
 }

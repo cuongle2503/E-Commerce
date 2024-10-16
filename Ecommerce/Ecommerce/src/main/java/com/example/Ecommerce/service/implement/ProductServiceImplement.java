@@ -33,12 +33,6 @@ public class ProductServiceImplement implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax) {
-        List<Product> products = productRepository.findByPriceBetween(priceMin, priceMax);
-        return products.stream().map(productMapper::toProductResponse).toList();
-    }
-
-    @Override
     public List<ProductResponse> findByOrderByPriceAsc() {
         List<Product> products = productRepository.findByOrderByPriceAsc();
         return products.stream().map(productMapper::toProductResponse).toList();
@@ -77,10 +71,6 @@ public class ProductServiceImplement implements ProductService {
         } else {
             products = productRepository.findAll();
         }
-        System.out.println("Min Price: " + minPrice);
-        System.out.println("Max Price: " + maxPrice);
-        System.out.println("Brand Names: " + brandNames);
-        System.out.println("Category Names: " + categoryNames);
         return products.stream().map(productMapper::toProductResponse).toList();
     }
 

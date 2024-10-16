@@ -21,20 +21,13 @@ public class PostmanProductController {
 
     @PostMapping("/addProduct")
     public ProductResponse addProduct(@RequestBody @Valid ProductRequest request){
-        return  productService.addProduct(request);
+        return productService.addProduct(request);
     }
 
     @GetMapping("/getProducts")
     public List<ProductResponse> getProducts() {
         List<ProductResponse> productResponseList;
         productResponseList = productService.getProducts();
-        return productResponseList;
-    }
-
-    @GetMapping("/getProductsByPriceRange/{priceMin}/{priceMax}")
-    public List<ProductResponse> findByPriceBetween(@PathVariable("priceMin") Double priceMin, @PathVariable("priceMax") Double priceMax) {
-        List<ProductResponse> productResponseList;
-        productResponseList = productService.findByPriceBetween(priceMin, priceMax);
         return productResponseList;
     }
 

@@ -9,7 +9,6 @@ import java.util.List;
 public interface ProductService {
     ProductResponse addProduct(ProductRequest productRequest);
     List<ProductResponse> getProducts();
-    List<ProductResponse> findByPriceBetween(Double priceMin, Double priceMax);
     List<ProductResponse> findByOrderByPriceAsc();
     List<ProductResponse> findByOrderByPriceDesc();
     List<ProductResponse> searchProductsByName(String name);

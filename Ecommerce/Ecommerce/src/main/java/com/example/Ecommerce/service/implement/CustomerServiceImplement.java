@@ -74,7 +74,7 @@ public class CustomerServiceImplement implements CustomerService {
 
         JWTClaimsSet jwtClaimsSet = new  JWTClaimsSet.Builder()
                 .subject(email)
-                .issuer("ecommerce.com")
+                .issuer("LeCuong")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()

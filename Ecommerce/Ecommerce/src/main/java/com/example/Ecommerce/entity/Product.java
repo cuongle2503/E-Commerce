@@ -33,12 +33,12 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonIgnore
     Category category;
 
     @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
     List<Order> orders;
 
     @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<Cart> carts;
 }
