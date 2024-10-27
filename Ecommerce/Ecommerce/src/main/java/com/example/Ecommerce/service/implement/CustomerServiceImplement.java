@@ -1,7 +1,9 @@
 package com.example.Ecommerce.service.implement;
 
 import com.example.Ecommerce.dto.request.CustomerRequest;
+import com.example.Ecommerce.dto.request.IntrospectRequest;
 import com.example.Ecommerce.dto.response.CustomerResponse;
+import com.example.Ecommerce.dto.response.IntrospectResponse;
 import com.example.Ecommerce.entity.Customer;
 import com.example.Ecommerce.exception.AppException;
 import com.example.Ecommerce.exception.ErrorCode;
@@ -10,15 +12,19 @@ import com.example.Ecommerce.repository.CustomerRepository;
 import com.example.Ecommerce.service.CustomerService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -32,8 +38,8 @@ public class CustomerServiceImplement implements CustomerService {
     @Autowired
     CustomerRepository customerRespository;
     @NonFinal
-    protected static final String SIGNER_KEY =
-            "3NigrTaHMIZxdy/sTX3HGXOO9COzFglnhA5SffZ0ZEuoCW1ig2wO7/SqSHzmAFup";
+    @Value("${jwt.signerKey}")
+    protected String SIGNER_KEY;
 
     @Override
     public CustomerResponse createAccount(CustomerRequest request) {
@@ -63,7 +69,6 @@ public class CustomerServiceImplement implements CustomerService {
         }
 
         var token = generateToken(email);
-        log.info("Generated Token: {}", token);
 
         return token;
     }
@@ -93,6 +98,22 @@ public class CustomerServiceImplement implements CustomerService {
             log.error("Can not create token", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException {
+        var token = introspectRequest.getToken();
+
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        Date expityTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        var verified = signedJWT.verify(verifier);
+        return IntrospectResponse.builder()
+                .valid(verified && expityTime.after(new Date()))
+                .build();
     }
 
 }

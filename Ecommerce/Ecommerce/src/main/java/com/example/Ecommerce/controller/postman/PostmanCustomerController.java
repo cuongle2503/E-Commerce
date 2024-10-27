@@ -1,15 +1,19 @@
 package com.example.Ecommerce.controller.postman;
 
 import com.example.Ecommerce.dto.request.CustomerRequest;
+import com.example.Ecommerce.dto.request.IntrospectRequest;
 import com.example.Ecommerce.dto.response.CustomerResponse;
+import com.example.Ecommerce.dto.response.IntrospectResponse;
 import com.example.Ecommerce.service.CustomerService;
-import com.example.Ecommerce.service.ProductService;
+import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/postman/customers")
@@ -34,4 +38,14 @@ public class PostmanCustomerController {
         return token;
     }
     //    --------------------------------------------------
+
+    //    -----------------INTROSPECT-----------------------
+    @PostMapping("/authenticate")
+    public IntrospectResponse authenticate(@RequestBody IntrospectRequest request)
+            throws ParseException, JOSEException {
+        return customerService.introspect(request);
+    }
+    //    --------------------------------------------------
+
+
 }

@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head th:replace="customer/home/fragmentsIndex/head :: head"></head>
 	<body>
+		<p th:text="${jwtToken}">Token will be displayed here.</p>
+		<h2>Welcome, <span th:text="${email}">User</span>!</h2>
 		<!-- HEADER -->
 		<header th:replace="customer/home/fragmentsIndex/header :: header"></header>
 
