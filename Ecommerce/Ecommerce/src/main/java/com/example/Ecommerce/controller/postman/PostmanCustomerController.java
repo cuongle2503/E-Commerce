@@ -10,16 +10,21 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/postman/customers")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PostmanCustomerController {
+    private static final Logger log = LoggerFactory.getLogger(PostmanCustomerController.class);
     @Autowired
     CustomerService customerService;
 
@@ -47,5 +52,15 @@ public class PostmanCustomerController {
     }
     //    --------------------------------------------------
 
+
+    @GetMapping("/getCustomers")
+    public List<CustomerResponse> getCustomers() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
+        return customerService.getCustomers();
+    }
 
 }

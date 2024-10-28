@@ -47,7 +47,10 @@
                                         </div>
                                     </div>
                                     <div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                        <form th:action="@{/add}" method="post">
+                                            <input type="hidden" name="productIds" th:value="${product.id}" />
+                                            <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                        </form>
                                     </div>
                                 </div>
                                 <!-- /product -->

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -28,4 +29,6 @@ public class Customer {
 
     @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     Cart cart;
+
+    Set<String> roles;
 }

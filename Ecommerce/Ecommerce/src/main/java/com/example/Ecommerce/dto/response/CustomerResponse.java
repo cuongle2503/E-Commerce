@@ -3,6 +3,8 @@ package com.example.Ecommerce.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,4 +17,5 @@ public class CustomerResponse {
     String email;
     String phoneNumber;
     String address;
+    Set<String> roles;
 }

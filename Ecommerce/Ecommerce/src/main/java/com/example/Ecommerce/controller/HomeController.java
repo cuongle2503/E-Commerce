@@ -1,11 +1,16 @@
 package com.example.Ecommerce.controller;
 
+import com.example.Ecommerce.dto.request.CartRequest;
 import com.example.Ecommerce.dto.request.CustomerRequest;
+import com.example.Ecommerce.dto.response.CartResponse;
 import com.example.Ecommerce.dto.response.ProductResponse;
+import com.example.Ecommerce.service.CartService;
 import com.example.Ecommerce.service.CustomerService;
 import com.example.Ecommerce.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +18,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.nimbusds.jwt.SignedJWT;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
 public class HomeController {
+    private static final Logger log = LoggerFactory.getLogger(HomeController.class);
     @Autowired
     CustomerService customerService;
     @Autowired
     ProductService productService;
+    @Autowired
+    private CartService cartService;
 
     //    -----------------HOME-----------------------------
     @GetMapping("/homepage")
@@ -33,17 +43,8 @@ public class HomeController {
 
         String jwtToken = (String) session.getAttribute("jwtToken");
         model.addAttribute("jwtToken", jwtToken);
+        model.addAttribute("isLoggedIn", jwtToken != null);
 
-        if (jwtToken != null) {
-            try {
-                SignedJWT signedJWT = SignedJWT.parse(jwtToken);
-                String email = signedJWT.getJWTClaimsSet().getSubject(); // Lấy email từ claim "sub"
-                model.addAttribute("email", email); // Thêm email vào model để hiển thị trong view
-            } catch (Exception e) {
-                // Xử lý ngoại lệ nếu token không hợp lệ
-                model.addAttribute("error", "Invalid JWT token");
-            }
-        }
         return "customer/home/index";
     }
     //    --------------------------------------------------
@@ -97,7 +98,6 @@ public class HomeController {
         try {
             String token = customerService.signIn(request.getEmail(), request.getPassword());
             session.setAttribute("jwtToken", token);
-
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/login";
@@ -106,4 +106,42 @@ public class HomeController {
     }
     //    --------------------------------------------------
 
+    //    -----------------LOGOUT----------------------------
+    @GetMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.invalidate();
+        redirectAttributes.addFlashAttribute("message", "Bạn đã đăng xuất thành công.");
+        return "redirect:/homepage";
+    }
+    //    --------------------------------------------------
+
+    @PostMapping("/add")
+    public String addToCart(@Valid CartRequest cartRequest,
+                            HttpSession session) throws ParseException {
+
+        String jwtToken = (String) session.getAttribute("jwtToken");
+
+        if (jwtToken == null) {
+            log.error("JWT token not found in session.");
+            return "redirect:/login";
+        }
+
+        // Kiểm tra ID sản phẩm từ cartRequest
+        if (cartRequest.getProductIds() == null || cartRequest.getProductIds().isEmpty()) {
+            log.error("Product IDs must not be null!");
+            return "redirect:/homepage"; // Hoặc xử lý lỗi
+        }
+
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(jwtToken);
+            String customerId = (String) signedJWT.getJWTClaimsSet().getClaim("customerId");
+            cartRequest.setCustomerId(customerId);
+            cartRequest.setQuantity(1);
+
+            CartResponse cartResponse = cartService.addCart(cartRequest);
+            return "redirect:/homepage";
+        } catch (ParseException e) {
+            return "redirect:/login";
+        }
+    }
 }

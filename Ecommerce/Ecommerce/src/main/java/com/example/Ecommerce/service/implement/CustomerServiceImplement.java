@@ -5,6 +5,7 @@ import com.example.Ecommerce.dto.request.IntrospectRequest;
 import com.example.Ecommerce.dto.response.CustomerResponse;
 import com.example.Ecommerce.dto.response.IntrospectResponse;
 import com.example.Ecommerce.entity.Customer;
+import com.example.Ecommerce.enums.Role;
 import com.example.Ecommerce.exception.AppException;
 import com.example.Ecommerce.exception.ErrorCode;
 import com.example.Ecommerce.mapper.CustomerMapper;
@@ -20,14 +21,16 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,9 @@ public class CustomerServiceImplement implements CustomerService {
     CustomerMapper customerMapper;
     @Autowired
     CustomerRepository customerRespository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
@@ -51,7 +57,18 @@ public class CustomerServiceImplement implements CustomerService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         customer.setPassword(passwordEncoder.encode(request.getPassword()));
 
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.CUSTOMER.name());
+        customer.setRoles(roles);
+
         return customerMapper.toCustomerResponse(customerRespository.save(customer));
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<CustomerResponse> getCustomers() {
+        log.info("GEt user okeay");
+        return customerRespository.findAll().stream().map(customerMapper::toCustomerResponse).toList();
     }
 
     @Override
@@ -62,29 +79,28 @@ public class CustomerServiceImplement implements CustomerService {
 
         Customer customer = customerRespository.findByEmail(email);
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-
         if (!passwordEncoder.matches(password, customer.getPassword())) {
             throw new AppException(ErrorCode.PASSWORD_INCORRECT);
         }
 
-        var token = generateToken(email);
+        var token = generateToken(customer);
 
         return token;
     }
 
     @Override
-    public String generateToken(String email) {
+    public String generateToken(Customer customer) {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new  JWTClaimsSet.Builder()
-                .subject(email)
+                .subject(customer.getEmail())
                 .issuer("LeCuong")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
-                .claim("customerClaim", "customer")
+                .claim("customerId", customer.getId())
+                .claim("scope", buildScope(customer))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -116,4 +132,11 @@ public class CustomerServiceImplement implements CustomerService {
                 .build();
     }
 
+    private String buildScope(Customer customer){
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(customer.getRoles())){
+            customer.getRoles().forEach(stringJoiner::add);
+        }
+        return stringJoiner.toString();
+    }
 }

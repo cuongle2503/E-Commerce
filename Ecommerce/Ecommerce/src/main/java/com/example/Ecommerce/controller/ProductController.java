@@ -6,6 +6,7 @@ import com.example.Ecommerce.dto.response.ProductResponse;
 import com.example.Ecommerce.service.BrandService;
 import com.example.Ecommerce.service.CategoryService;
 import com.example.Ecommerce.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public String showProductPage(@RequestParam(value = "sort", required = false, defaultValue = "0") String sort,
-                                  Model model) {
+                                  Model model,
+                                  HttpSession session) {
         List<ProductResponse> products;
 
         if ("1".equals(sort)) {
@@ -47,6 +49,11 @@ public class ProductController {
 
         model.addAttribute("categories", categoryResponseList);
         model.addAttribute("brands", brandResponseList);
+
+        String jwtToken = (String) session.getAttribute("jwtToken");
+        model.addAttribute("jwtToken", jwtToken);
+        model.addAttribute("isLoggedIn", jwtToken != null);
+
         return "customer/home/store";
     }
 
@@ -55,7 +62,8 @@ public class ProductController {
                                  @RequestParam(required = false) Double priceMax,
                                  @RequestParam(required = false) List<String> brands,
                                  @RequestParam(required = false) List<String> categories,
-                                 Model model) {
+                                 Model model,
+                                 HttpSession session) {
         List<ProductResponse> productResponseList;
         if (brands != null && brands.contains("null")) {
             brands = null;
@@ -76,6 +84,10 @@ public class ProductController {
         List<BrandResponse> brandResponseList;
         brandResponseList = brandService.getBrand();
         model.addAttribute("brands", brandResponseList);
+
+        String jwtToken = (String) session.getAttribute("jwtToken");
+        model.addAttribute("jwtToken", jwtToken);
+        model.addAttribute("isLoggedIn", jwtToken != null);
 
         return "customer/home/filter";
     }
