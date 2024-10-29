@@ -30,7 +30,7 @@ public class CartServiceImplement implements CartService {
         Customer customer = customerRepository.findById(cartRequest.getCustomerId())
                 .orElseThrow(() -> new EntityNotFoundException("Khách hàng không tìm thấy"));
 
-        Cart cart =  cartMapper.toCart(cartRequest);
+        Cart cart = cartRepository.findByCustomer(customer);
         cart.setCustomer(customer);
 
         List<Product> products = productRepository.findAllById(cartRequest.getProductIds());

@@ -117,28 +117,28 @@ public class HomeController {
 
     @PostMapping("/add")
     public String addToCart(@Valid CartRequest cartRequest,
-                            HttpSession session) throws ParseException {
+                            HttpSession session) {
 
         String jwtToken = (String) session.getAttribute("jwtToken");
 
         if (jwtToken == null) {
-            log.error("JWT token not found in session.");
             return "redirect:/login";
-        }
-
-        // Kiểm tra ID sản phẩm từ cartRequest
-        if (cartRequest.getProductIds() == null || cartRequest.getProductIds().isEmpty()) {
-            log.error("Product IDs must not be null!");
-            return "redirect:/homepage"; // Hoặc xử lý lỗi
         }
 
         try {
             SignedJWT signedJWT = SignedJWT.parse(jwtToken);
             String customerId = (String) signedJWT.getJWTClaimsSet().getClaim("customerId");
+
+            if (customerId == null || customerId.isEmpty()) {
+                return "redirect:/login";
+            }
+
+            // Đặt customer ID vào CartRequest trước khi gọi tầng service
             cartRequest.setCustomerId(customerId);
             cartRequest.setQuantity(1);
 
-            CartResponse cartResponse = cartService.addCart(cartRequest);
+            // Gọi service để thêm giỏ hàng
+            cartService.addCart(cartRequest);
             return "redirect:/homepage";
         } catch (ParseException e) {
             return "redirect:/login";

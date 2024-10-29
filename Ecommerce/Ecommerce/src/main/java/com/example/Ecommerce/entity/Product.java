@@ -13,8 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class Product {
+@FieldDefaults(level = AccessLevel.PRIVATE)public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
