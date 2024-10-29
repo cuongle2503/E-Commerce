@@ -37,7 +37,7 @@ import java.util.List;
     @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
     List<Order> orders;
 
-    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore
-    List<Cart> carts;
+    List<CartItem> cartItems;
 }

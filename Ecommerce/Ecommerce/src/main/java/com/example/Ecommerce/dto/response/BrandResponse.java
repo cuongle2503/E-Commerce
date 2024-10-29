@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BrandResponse {
-    String id;
+//    String id;
     String name;
-    String detail;
+//    String detail;
 }

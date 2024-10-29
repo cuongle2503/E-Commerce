@@ -30,4 +30,12 @@ public class PostmanCartController {
         List<CartResponse> cartResponses = cartService.getCarts();
         return cartResponses;
     }
+
+    @GetMapping("/deleteProduct/{customerId}/{productId}")
+    public void removeProductFromCart(
+            @PathVariable String customerId,
+            @PathVariable String productId) {
+
+        cartService.deleteProductFromCart(customerId, productId);
+    }
 }

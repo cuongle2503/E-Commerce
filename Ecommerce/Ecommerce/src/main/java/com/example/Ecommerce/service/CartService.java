@@ -10,4 +10,5 @@ import java.util.List;
 public interface CartService {
     CartResponse addCart(CartRequest cartRequest);
     List<CartResponse> getCarts();
+    void deleteProductFromCart(String customerId, String productId);
 }

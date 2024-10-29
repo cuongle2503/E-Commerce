@@ -5,27 +5,27 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor()
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Cart {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    Customer customer;
-
-    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
     @JsonIgnore
-    List<CartItem> cartItems;
+    Cart cart;
 
-    Double totalPrice;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    Product product;
+
+    Integer quantity;
 }
+

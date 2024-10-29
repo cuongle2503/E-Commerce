@@ -1,9 +1,7 @@
-package com.example.Ecommerce.dto.request;
+package com.example.Ecommerce.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +9,6 @@ import java.util.List;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartRequest {
-    String customerId;
-    List<String> productIds;
+public class CustomerCartResponse {
+    String name;
 }

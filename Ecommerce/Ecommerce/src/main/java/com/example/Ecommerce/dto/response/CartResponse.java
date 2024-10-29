@@ -1,5 +1,6 @@
 package com.example.Ecommerce.dto.response;
 
+import com.example.Ecommerce.entity.CartItem;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartResponse {
     String id;
-    Integer quantity;
-    CustomerResponse customer;
-    List<ProductResponse> products;
+    CustomerCartResponse customer;
+    List<CartItemResponse> cartItems;
+    Double totalPrice;
 }

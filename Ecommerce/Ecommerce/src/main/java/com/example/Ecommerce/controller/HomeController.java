@@ -2,7 +2,6 @@ package com.example.Ecommerce.controller;
 
 import com.example.Ecommerce.dto.request.CartRequest;
 import com.example.Ecommerce.dto.request.CustomerRequest;
-import com.example.Ecommerce.dto.response.CartResponse;
 import com.example.Ecommerce.dto.response.ProductResponse;
 import com.example.Ecommerce.service.CartService;
 import com.example.Ecommerce.service.CustomerService;
@@ -18,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.nimbusds.jwt.SignedJWT;
 
@@ -135,7 +133,6 @@ public class HomeController {
 
             // Đặt customer ID vào CartRequest trước khi gọi tầng service
             cartRequest.setCustomerId(customerId);
-            cartRequest.setQuantity(1);
 
             // Gọi service để thêm giỏ hàng
             cartService.addCart(cartRequest);
