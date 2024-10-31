@@ -46,7 +46,8 @@ public class SecurityConfig {
             "/cart",
             "/cart/remove",
             "detailProduct",
-            "/checkout"
+            "/checkout",
+            "/admin/homepage"
     };
 
     @Value("${jwt.signerKey}")
@@ -61,6 +62,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers("customer/**").permitAll()
+                                .requestMatchers("admin/**").permitAll()
                         .anyRequest().authenticated()
 
                 )
