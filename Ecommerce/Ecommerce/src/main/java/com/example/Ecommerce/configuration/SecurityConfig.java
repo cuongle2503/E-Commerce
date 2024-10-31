@@ -33,7 +33,6 @@ public class SecurityConfig {
             "/postman/products/sortProductByPriceDesc",
             "/postman/products/searchProductsByName/**",
             "/postman/products/filterProduct/**",
-            "/add"
     };
 
     private final String[] PUBLIC_ENDPOINTS = {
@@ -42,7 +41,12 @@ public class SecurityConfig {
             "/homepage",
             "/register",
             "/login",
-            "/add"
+            "/add",
+            "/adds",
+            "/cart",
+            "/cart/remove",
+            "detailProduct",
+            "/checkout"
     };
 
     @Value("${jwt.signerKey}")

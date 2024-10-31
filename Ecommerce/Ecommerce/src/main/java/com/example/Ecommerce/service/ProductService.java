@@ -16,4 +16,5 @@ public interface ProductService {
                                          Double maxPrice,
                                          List<String> brandNames,
                                          List<String> categoryNames);
+    ProductResponse getProductById(String id);
 }

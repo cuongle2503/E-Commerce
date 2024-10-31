@@ -67,4 +67,9 @@ public class PostmanProductController {
         List<ProductResponse> filteredProducts = productService.filterProducts(priceMin, priceMax, brands, categories);
         return filteredProducts;
     }
+
+    @GetMapping("/getProductById/{id}")
+    public ProductResponse getProductById(@PathVariable("id") String id){
+        return productService.getProductById(id);
+    }
 }

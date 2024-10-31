@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--HEAD-->
+<head th:replace="customer/home/fragmentsIndex/head :: head"></head>
+<body>
+<!-- HEADER -->
+<header th:replace="customer/home/fragmentsIndex/header :: header"></header>
+
+<!-- NAVIGATION -->
+<nav th:replace="customer/home/fragmentsIndex/navigation :: navigation"></nav>
+
+<!-- BREADCRUMB -->
+<div th:replace="customer/home/fragmentsIndex/breadcrumb :: breadcrumb"></div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION 08 -->
+<div th:replace="customer/home/fragmentsIndex/section11 :: section11"></div>
+
+<!-- NEWSLETTER-->
+<div th:replace="customer/home/fragmentsIndex/newsletter :: newsletter"></div>->
+
+<!-- FOOTER -->
+<footer th:replace="customer/home/fragmentsIndex/footer :: footer"></footer>
+
+<!-- jQuery Plugins -->
+<script th:src="@{/customer/home/js/jquery.min.js}"></script>
+<script th:src="@{/customer/home/js/bootstrap.min.js}"></script>
+<script th:src="@{/customer/home/js/slick.min.js}"></script>
+<script th:src="@{/customer/home/js/nouislider.min.js}"></script>
+<script th:src="@{/customer/home/js/jquery.zoom.min.js}"></script>
+<script th:src="@{/customer/home/js/main.js}"></script>
+</body>
+</html>

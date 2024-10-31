@@ -38,4 +38,9 @@ public class PostmanCartController {
 
         cartService.deleteProductFromCart(customerId, productId);
     }
+
+    @GetMapping("/getCartByIdCustomer/{customerId}")
+    public CartResponse getCartByIdCustomer(@PathVariable String customerId) {
+        return cartService.getCartByIdCustomer(customerId);
+    }
 }

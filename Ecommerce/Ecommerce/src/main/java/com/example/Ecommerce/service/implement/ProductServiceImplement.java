@@ -6,6 +6,9 @@ import com.example.Ecommerce.entity.Product;
 import com.example.Ecommerce.mapper.ProductMapper;
 import com.example.Ecommerce.repository.ProductRepository;
 import com.example.Ecommerce.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.List;
 
 @Service
 public class ProductServiceImplement implements ProductService {
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImplement.class);
     @Autowired
     ProductMapper productMapper;
     @Autowired
@@ -72,6 +76,13 @@ public class ProductServiceImplement implements ProductService {
             products = productRepository.findAll();
         }
         return products.stream().map(productMapper::toProductResponse).toList();
+    }
+
+    @Override
+    public ProductResponse getProductById(String id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sản phẩm không tìm thấy với ID: " + id));
+        return productMapper.toProductResponse(product);
     }
 
 

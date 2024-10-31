@@ -1,0 +1,37 @@
+<div class="section" th:fragment="section08">
+    <!-- container -->
+    <div class="container" th:each="cart : ${carts}">
+        <h2>Cart ID: <span th:text="${cart.id}"></span></h2>
+        <h3>Customer Name: <span th:text="${cart.customer.name ?: 'Not Name'}"></span></h3>
+
+        <!-- cart table -->
+        <div class="cart-table">
+            <div class="cart-table-header">
+                <div class="cart-column cart-product-name">Product Name</div>
+                <div class="cart-column cart-product-price">Price</div>
+                <div class="cart-column cart-product-quantity">Quantity</div>
+                <div class="cart-column cart-product-remove">Delete</div>
+            </div>
+            <!-- cart items -->
+            <div th:each="item : ${cart.cartItems}" class="cart-table-row">
+                <div class="cart-column cart-product-name" th:text="${item.product.name}"></div>
+                <div class="cart-column cart-product-price" th:text="${item.product.price} + ' USD'"></div>
+                <div class="cart-column cart-product-quantity" th:text="${item.quantity}"></div>
+                <div class="cart-column cart-product-remove">
+                    <form th:action="@{/cart/remove}" method="post">
+                        <input type="hidden" name="productId" th:value="${item.product.id}"/>
+                        <button class="remove-cart-item-btn" type="submit">Xóa</button>
+                    </form>
+                </div>
+            </div>
+            <!-- /cart items -->
+        </div>
+        <!-- cart total -->
+        <div class="cart-total">
+            <h4>Total: <span th:text="${cart.totalPrice} + ' USD'"></span></h4>
+            <button class="checkout-btn">Check out</button>
+        </div>
+        <!-- /cart total -->
+        <hr />
+    </div>
+</div>

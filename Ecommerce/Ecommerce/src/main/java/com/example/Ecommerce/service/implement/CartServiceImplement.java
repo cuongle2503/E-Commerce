@@ -103,17 +103,30 @@ public class CartServiceImplement implements CartService {
         CartItem cartItem = cartItemRepository.findByCartAndProduct_Id(cart, productId)
                 .orElseThrow(() -> new EntityNotFoundException("Sản phẩm không tìm thấy trong giỏ hàng"));
 
-        // Xóa trực tiếp CartItem khỏi cơ sở dữ liệu
         cartItemRepository.delete(cartItem);
 
-        // Cập nhật tổng giá trị của giỏ hàng
         double totalPrice = cart.getCartItems().stream()
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
         cart.setTotalPrice(totalPrice);
 
-        // Lưu giỏ hàng đã cập nhật
         cartRepository.save(cart);
+    }
+
+    @Override
+    public CartResponse getCartByIdCustomer(String customerId) {
+        // Tìm kiếm khách hàng theo ID
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Khách hàng không tìm thấy"));
+
+        // Lấy giỏ hàng theo khách hàng
+        Cart cart = cartRepository.findByCustomer(customer);
+        if (cart == null) {
+            throw new EntityNotFoundException("Giỏ hàng không tồn tại cho khách hàng này");
+        }
+
+        // Chuyển đổi giỏ hàng thành CartResponse
+        return cartMapper.toCartResponse(cart);
     }
 
 
