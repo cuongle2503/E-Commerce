@@ -55,12 +55,16 @@ public class PostmanCustomerController {
 
     @GetMapping("/getCustomers")
     public List<CustomerResponse> getCustomers() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        log.info("Username: {}", authentication.getName());
-        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
-
         return customerService.getCustomers();
     }
 
+    @GetMapping("/getCustomer/{id}")
+    public CustomerResponse getCustomer(@PathVariable("id") String id) {
+        return customerService.getCustomer(id);
+    }
+
+    @GetMapping("/getMyInfo")
+    public CustomerResponse getMyInfo() {
+        return customerService.getMyInfo();
+    }
 }

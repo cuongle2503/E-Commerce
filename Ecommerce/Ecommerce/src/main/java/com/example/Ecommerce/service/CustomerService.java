@@ -18,4 +18,6 @@ public interface CustomerService {
     String signIn(String email, String password);
     String generateToken(Customer customer);
     IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException;
+    CustomerResponse getCustomer(String id);
+    CustomerResponse getMyInfo();
 }

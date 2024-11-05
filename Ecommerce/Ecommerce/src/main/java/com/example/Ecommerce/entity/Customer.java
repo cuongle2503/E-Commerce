@@ -30,5 +30,6 @@ public class Customer {
     @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     Cart cart;
 
-    Set<String> roles;
+    @ManyToMany
+    Set<Role> roles;
 }

@@ -5,11 +5,12 @@ import com.example.Ecommerce.dto.request.IntrospectRequest;
 import com.example.Ecommerce.dto.response.CustomerResponse;
 import com.example.Ecommerce.dto.response.IntrospectResponse;
 import com.example.Ecommerce.entity.Customer;
-import com.example.Ecommerce.enums.Role;
+import com.example.Ecommerce.entity.Role;
 import com.example.Ecommerce.exception.AppException;
 import com.example.Ecommerce.exception.ErrorCode;
 import com.example.Ecommerce.mapper.CustomerMapper;
 import com.example.Ecommerce.repository.CustomerRepository;
+import com.example.Ecommerce.repository.RoleRepository;
 import com.example.Ecommerce.service.CustomerService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -21,7 +22,9 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,8 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomerServiceImplement implements CustomerService {
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     CustomerMapper customerMapper;
     @Autowired
@@ -57,17 +62,27 @@ public class CustomerServiceImplement implements CustomerService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         customer.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.CUSTOMER.name());
+        Optional<Role> userRoleOpt = roleRepository.findById("USER");
+
+        Role userRole = userRoleOpt.orElseGet(() -> {
+            Role role = new Role();
+            role.setName("USER");
+            role.setDescription("User roles");
+            return roleRepository.save(role);
+        });
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
+
         customer.setRoles(roles);
 
         return customerMapper.toCustomerResponse(customerRespository.save(customer));
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasAuthority('UPDATE_DATA')")
     public List<CustomerResponse> getCustomers() {
-        log.info("GEt user okeay");
         return customerRespository.findAll().stream().map(customerMapper::toCustomerResponse).toList();
     }
 
@@ -132,11 +147,33 @@ public class CustomerServiceImplement implements CustomerService {
                 .build();
     }
 
+    @PostAuthorize("returnObject.email == authentication.name")
+    @Override
+    public CustomerResponse getCustomer(String id) {
+        return customerMapper.toCustomerResponse(customerRespository.findById(id)
+                .orElseThrow(()-> new AppException(ErrorCode.EMAIL_NOT_EXISTED)));
+    }
+
+    @Override
+    public CustomerResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+        Customer customer = customerRespository.findByEmail(name);
+
+        return customerMapper.toCustomerResponse(customer);
+    }
+
     private String buildScope(Customer customer){
         StringJoiner stringJoiner = new StringJoiner(" ");
-        if (!CollectionUtils.isEmpty(customer.getRoles())){
-            customer.getRoles().forEach(stringJoiner::add);
-        }
+
+        if (!CollectionUtils.isEmpty(customer.getRoles()))
+            customer.getRoles().forEach(role -> {
+                stringJoiner.add("ROLE_" + role.getName());
+                if (!CollectionUtils.isEmpty(role.getPermissions()))
+                    role.getPermissions()
+                            .forEach(permission -> stringJoiner.add(permission.getName()));
+            });
+
         return stringJoiner.toString();
     }
 }

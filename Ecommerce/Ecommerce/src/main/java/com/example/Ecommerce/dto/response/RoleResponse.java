@@ -1,7 +1,5 @@
 package com.example.Ecommerce.dto.response;
 
-import com.example.Ecommerce.entity.Role;
-import com.example.Ecommerce.mapper.RoleMapper;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,11 +11,8 @@ import java.util.Set;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerResponse {
-    String id;
+public class RoleResponse {
     String name;
-    String email;
-    String phoneNumber;
-    String address;
-    Set<RoleResponse> roles;
+    String description;
+    Set<PermissionResponse> permissions;
 }

@@ -46,7 +46,10 @@ public class SecurityConfig {
             "/cart/remove",
             "detailProduct",
             "/checkout",
-            "/admin/homepage"
+            "/admin/homepage",
+            "admin/login",
+            "customer/**",
+            "admin/**"
     };
 
     @Value("${jwt.signerKey}")
@@ -60,9 +63,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_API).permitAll()
                                 .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
-                                .requestMatchers("customer/**").permitAll()
-                                .requestMatchers("admin/**").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
 
                 )
                 .logout(logout -> logout
@@ -82,7 +84,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
