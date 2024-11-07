@@ -43,4 +43,9 @@ public class PostmanCartController {
     public CartResponse getCartByIdCustomer(@PathVariable String customerId) {
         return cartService.getCartByIdCustomer(customerId);
     }
+
+    @GetMapping("/getCartById/{Id}")
+    public CartResponse getCartById(@PathVariable String Id) {
+        return cartService.getCartById(Id);
+    }
 }

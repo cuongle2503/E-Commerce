@@ -3,6 +3,9 @@
 <!--HEAD-->
 <head th:replace="customer/home/fragmentsIndex/head :: head"></head>
 <body>
+<div>
+    <p>Your Cart ID: <span th:text="${cartId}"></span></p>
+</div>
 <!-- HEADER -->
 <header th:replace="customer/home/fragmentsIndex/header :: header"></header>
 
@@ -13,7 +16,7 @@
 <div th:replace="customer/home/fragmentsIndex/breadcrumb :: breadcrumb"></div>
 <!-- /BREADCRUMB -->
 
-<!-- SECTION 08 -->
+<!-- SECTION 11 -->
 <div th:replace="customer/home/fragmentsIndex/section11 :: section11"></div>
 
 <!-- NEWSLETTER-->

@@ -19,22 +19,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    Date orderDate;
-    String shippingAddress;
-    String oderStatus;
-    String oderMail;
-    Double totalAmount;
+    String name;
+    String address;
+    String telephone;
+    String orderNote;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id", nullable = false)
-    Customer customer;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "order_product",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    List<Product> products;
-
+    @OneToOne
+    Cart cart;
 }

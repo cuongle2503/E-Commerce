@@ -1,8 +1,7 @@
 package com.example.Ecommerce.controller.admin;
 
-import com.example.Ecommerce.dto.response.CustomerResponse;
-import com.example.Ecommerce.dto.response.ProductResponse;
-import com.example.Ecommerce.service.CustomerService;
+import com.example.Ecommerce.dto.response.CartResponse;
+import com.example.Ecommerce.service.CartService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,14 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
-public class AdminUserController {
+public class AdminCartController {
     @Autowired
-    CustomerService customerService;
+    CartService cartService;
 
-    @GetMapping("/admin/user")
+    @GetMapping("/admin/cart")
     public String user(HttpSession session, Model model){
-        List<CustomerResponse> customers = customerService.getCustomers();
-        model.addAttribute("customers", customers);
+        List<CartResponse> carts = cartService.getCarts();
+        model.addAttribute("carts", carts);
 
         String jwtToken = (String) session.getAttribute("jwtToken");
         model.addAttribute("jwtToken", jwtToken);

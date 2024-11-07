@@ -129,5 +129,12 @@ public class CartServiceImplement implements CartService {
         return cartMapper.toCartResponse(cart);
     }
 
+    @Override
+    public CartResponse getCartById(String cartId) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new EntityNotFoundException("Giỏ hàng không tồn tại với ID: " + cartId));
+
+        return cartMapper.toCartResponse(cart);
+    }
 
 }

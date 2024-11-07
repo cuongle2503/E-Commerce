@@ -41,6 +41,7 @@ public class HomeController {
 
         String jwtToken = (String) session.getAttribute("jwtToken");
         model.addAttribute("jwtToken", jwtToken);
+
         model.addAttribute("isLoggedIn", jwtToken != null);
 
         return "customer/home/index";

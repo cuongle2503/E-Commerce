@@ -24,7 +24,10 @@ public class AdminHomeController {
     CustomerService customerService;
 
     @GetMapping("/admin/homepage")
-    public String index(){
+    public String index(HttpSession session, Model model){
+        String jwtToken = (String) session.getAttribute("jwtToken");
+        model.addAttribute("jwtToken", jwtToken);
+
         return "admin/index";
     }
 
@@ -33,6 +36,8 @@ public class AdminHomeController {
     public String signInPage(Model model, @ModelAttribute("message") String message){
         model.addAttribute("customer", new CustomerRequest());
         model.addAttribute("message", message);
+
+
         return "admin/login";
     }
 

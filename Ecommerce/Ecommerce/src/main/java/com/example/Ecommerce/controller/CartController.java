@@ -32,6 +32,7 @@ public class CartController {
 
         CartResponse cartResponse = cartService.getCartByIdCustomer(customerId);
         model.addAttribute("carts", cartResponse);
+        session.setAttribute("cartId", cartResponse.getId());
 
         return "customer/home/cart";
     }

@@ -34,9 +34,6 @@ import java.util.List;
     @JoinColumn(name = "category_id", nullable = false)
     Category category;
 
-    @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
-    List<Order> orders;
-
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore
     List<CartItem> cartItems;

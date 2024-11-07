@@ -12,4 +12,5 @@ public interface CartService {
     List<CartResponse> getCarts();
     void deleteProductFromCart(String customerId, String productId);
     CartResponse getCartByIdCustomer(String customerId);
+    CartResponse getCartById(String cartId);
 }

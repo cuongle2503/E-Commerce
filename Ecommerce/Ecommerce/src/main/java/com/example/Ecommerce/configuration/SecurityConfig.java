@@ -46,7 +46,7 @@ public class SecurityConfig {
             "/cart/remove",
             "detailProduct",
             "/checkout",
-            "/admin/homepage",
+            "place-order",
             "admin/login",
             "customer/**",
             "admin/**"

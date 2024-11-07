@@ -24,9 +24,6 @@ public class Customer {
     String address;
     String password;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    List<Order> orders;
-
     @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
     Cart cart;
 
