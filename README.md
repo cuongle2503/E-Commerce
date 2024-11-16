@@ -243,6 +243,18 @@ SpringCommerce là một start-up nhỏ muốn xây dựng một ứng dụng mu
   3. **Tăng tính mô-đun và tái sử dụng**:
      - Các lớp trong thư mục `exception` có thể được sử dụng lại ở nhiều phần khác nhau của ứng dụng.
 
----
-
+## Tất cả các bước cần thiết để ứng dụng chạy trên máy máy tính local.`
+      ```properties
+      ### Clone về máy tính
+      git clone https://gitlab.duthu.net/S52100910/java-midterm.git
+      
+      ### Tạo cơ sở dữ liệu 
+      Tạo một cơ sở dữ liệu trong MySQL với tên là javagk để lưu trữ dữ liệu của ứng dụng. Có thể sử dụng MySQL Workbench hoặc XAMPP để tạo cơ sở dữ liệu.
+      Sau đó hãy import file db.sql trong resources để import dữ liệu vào cơ sở dữ liệu.
+      
+      ### Cấu hình lại file application.properties
+      Cấu hình các thông số kết nối cơ sở dữ liệu trong tệp application.properties của ứng dụng Spring Boot.
+      
+      ### Chạy file JavaGkApplication trong đường dẫn src/main/java/com/example/JavaGk/
+      ```
 *Báo cáo này được viết bởi Lê Văn Cường - 52100171.*
