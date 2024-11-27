@@ -44,12 +44,14 @@ public class SecurityConfig {
             "/adds",
             "/cart",
             "/cart/remove",
-            "detailProduct",
+            "detailProduct/**",
             "/checkout",
             "place-order",
             "admin/login",
             "customer/**",
-            "admin/**"
+            "admin/**",
+            "static/customer/img/**",
+            "/img/**"
     };
 
     @Value("${jwt.signerKey}")

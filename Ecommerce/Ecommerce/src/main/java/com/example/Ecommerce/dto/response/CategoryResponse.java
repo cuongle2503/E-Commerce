@@ -1,10 +1,7 @@
 package com.example.Ecommerce.dto.response;
 
-import com.example.Ecommerce.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +10,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
-//    String id;
+    String id;
     String name;
-//    String detail;
+    String detail;
 }
